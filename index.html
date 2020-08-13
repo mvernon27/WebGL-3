@@ -1,0 +1,64 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL-3</title>
+</head>
+<body>
+    
+</body>
+<script src="three.js"></script>
+<script> 
+    var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    scene.background = new THREE.Color(0xFFFFFF);
+	var renderer = new THREE.WebGLRenderer();
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+
+	var geometry = new THREE.SphereGeometry(1, 32 ,24);
+    var cube = new THREE.Mesh( geometry, material );
+    var length = cube.geometry.vertices.length;
+    var geoVCloud;
+    var point;
+    var clouds = [];
+    for (var i = 0; i < length; i++)
+    {
+        var geoVCloud = new THREE.Geometry();
+        point = new THREE.Vector3(
+            geometry.vertices[i].x,
+            geometry.vertices[i].y,
+            geometry.vertices[i].z
+            );
+            point.initialOpac = {};
+            geoVCloud.vertices.push(point)
+
+            var zPoint = geometry.vertices[i].z;
+            point.initalOpac = zPoint;
+            if (zPoint < -.5){zPoint = .1}
+            if (zPoint < -0){zPoint = .2}
+            var material = new THREE.PointsMaterial( { color: 'blue', transparent: true, opacity:zPoint, size:0.01 } );
+
+        var pCloud = new THREE.Points(geoVCloud, material)
+        clouds.push(pCloud);
+        scene.add( pCloud );
+    }
+
+	camera.position.z = 5;
+
+	function animate() {
+        for (var i = 0; i < length; i++)
+        {
+            clouds[i].rotation.x += .01;
+            clouds[i].rotation.y += .01;
+            clouds[i].material.opacity = clouds[i].geometry.vertices[0].initalOpac+(clouds[i].quaternion.z+.1)
+        }
+        //console.log(clouds[0].quaternion.z+' , '+clouds[12].quaternion.z)
+        requestAnimationFrame( animate );
+        renderer.render( scene, camera );
+	};
+
+    animate();
+    console.log(clouds)
+</script>
+</html>

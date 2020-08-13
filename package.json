@@ -1,0 +1,16 @@
+{
+  "name": "WebGL-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "three.js",
+  "dependencies": {
+    "http-server": "^0.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "http-server -p 80"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
